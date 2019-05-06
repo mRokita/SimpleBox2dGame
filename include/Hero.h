@@ -24,20 +24,28 @@ public:
             if(m_body->GetLinearVelocity().x > -5.f)
                 m_body->ApplyLinearImpulse(impulse, m_body->GetWorldCenter(), true);
         }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W ) && m_body->GetLinearVelocity().y == .0f){
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W ) && numContacts > 0 && m_body->GetLinearVelocity().y >= -2.f){
             const b2Vec2 impulse(0.f, -10.f*m_body->GetMass());
+            std::cout << "JUMP" << std::endl;
             m_body->ApplyLinearImpulse(impulse, m_body->GetWorldCenter(), true);
         }
     }
 
-protected:
-    b2BodyDef getBodyDef(float x, float y) override;
+    void startContact(b2Body *body) override{
+        std::cout << "start" << std::endl;
+        numContacts ++;
+    };
 
-public:
+    void endContact(b2Body *body) override{
+        std::cout << "end" << std::endl;
+        numContacts --;
+    };
 
     void draw(const std::shared_ptr<sf::RenderWindow> &window) override;
-
+private:
+    int numContacts = 0;
 protected:
+    b2BodyDef getBodyDef(float x, float y) override;
     b2BodyType getBodyType() const override;
 
     void addFixtures() override;

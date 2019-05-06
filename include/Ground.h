@@ -10,8 +10,14 @@
 
 class Ground : public Sprite {
 public:
+    Ground(int width, int height){
+        this->height = height;
+        this->width = width;
+    }
     void draw(const std::shared_ptr<sf::RenderWindow> &window) override;
-
+private:
+    int height;
+    int width;
 protected:
     b2BodyType getBodyType() const override;
 

@@ -25,10 +25,13 @@ protected:
     }
 
 
-
     virtual void addFixtures(){};
 
 public:
+
+    virtual void startContact(b2Body* body){}
+
+    virtual void endContact(b2Body* body){}
 
     float getX(){
         return m_body->GetPosition().x*AngryGuns::SCALE;

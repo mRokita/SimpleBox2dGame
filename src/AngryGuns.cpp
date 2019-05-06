@@ -6,6 +6,7 @@
 #include "../include/Box.h"
 #include "../include/Ground.h"
 #include "../include/Hero.h"
+#include "../include/ContactListener.h"
 
 
 void AngryGuns::start() {
@@ -23,9 +24,12 @@ void AngryGuns::start() {
     box2->addToGame(350.f, 10.f);
     std::shared_ptr<Hero> hero = Hero::getInstance();
     hero->addToGame(210.f, 540.f-90.f);
-    std::unique_ptr<Ground> ground  = std::make_unique<Ground>();
+    std::unique_ptr<Ground> ground  = std::make_unique<Ground>(960.f, 50.f);
     float offset = 0;
     ground->addToGame(960.f/2.f, 540.f-25.f);
+    std::unique_ptr<Ground> ground2  = std::make_unique<Ground>(400.f, 200.f);
+    ground2->addToGame(500.f, 390.f);
+    m_world->SetContactListener(static_cast<b2ContactListener*>(new ContactListener()));
     sf::Texture texture;
     texture.loadFromFile("/home/mrokita/CLionProjects/AngryGuns/res/glass.jpg");
     texture.setRepeated(true);
@@ -35,7 +39,7 @@ void AngryGuns::start() {
     while (window->isOpen() && m_alive) {
         window->clear(sf::Color::White);
         window->draw(background);
-        m_world->Step(1/120.f, 8, 3);
+        m_world->Step(1/120.f, 8, 6);
         if((hero->getX()-offset) > 600.f){
             float new_offset = hero->getX() - 600.f;
             sf::View v = window->getView();
