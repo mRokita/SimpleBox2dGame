@@ -3,5 +3,5 @@ project(AngryGuns)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(AngryGuns main.cpp src/AngryBlocks.cpp include/AngryBlocks.h include/Sprite.h src/Drawable.cpp include/Drawable.h src/Box.cpp include/Box.h src/Ground.cpp include/Ground.h src/Block.cpp include/Block.h src/Singleton.cpp include/Singleton.h src/ContactListener.cpp include/ContactListener.h src/GroundFactory.cpp include/GroundFactory.h src/BlockFactory.cpp include/BlockFactory.h src/TBlock.cpp include/TBlock.h)
+add_executable(AngryGuns main.cpp src/AngryBlocks.cpp include/AngryBlocks.h include/Sprite.h src/Drawable.cpp include/Drawable.h src/Box.cpp include/Box.h src/Ground.cpp include/Ground.h src/Block.cpp include/Block.h include/CBlock.h src/CBlock.cpp src/Singleton.cpp include/Singleton.h src/ContactListener.cpp include/ContactListener.h src/GroundFactory.cpp include/GroundFactory.h src/BlockFactory.cpp include/BlockFactory.h src/TBlock.cpp include/TBlock.h src/LBlock.cpp include/LBlock.h src/SBlock.cpp include/SBlock.h src/IBlock.cpp include/IBlock.h)
 target_link_libraries(AngryGuns Box2D sfml-audio sfml-window sfml-graphics sfml-system)

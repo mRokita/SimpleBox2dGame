@@ -6,6 +6,7 @@
 #include "../include/Box.h"
 #include "../include/Ground.h"
 #include "../include/Block.h"
+#include "../include/CBlock.h"
 #include "../include/ContactListener.h"
 #include "../include/GroundFactory.h"
 #include "../include/BlockFactory.h"
@@ -19,8 +20,7 @@ void AngryBlocks::start() {
     window->setView(view);
     window->setFramerateLimit(120);
 
-
-    BlockFactory::getInstance().addTBlock();
+    BlockFactory::getInstance().addIBlock();
     GroundFactory::getInstance().processChunks();
     m_world->SetContactListener(static_cast<b2ContactListener*>(new ContactListener()));
     while (window->isOpen() && m_alive) {

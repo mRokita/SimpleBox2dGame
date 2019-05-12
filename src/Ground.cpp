@@ -6,11 +6,11 @@
 
 void Ground::draw(const std::shared_ptr<sf::RenderWindow> &window) {
     sf::RectangleShape rs(sf::Vector2f(this->width, this->height));
-    rs.setFillColor({244, 158, 66, 255});
+    rs.setFillColor({234, 217, 157, 255});
     applyBox2dPosition(rs);
     rs.setOrigin(this->width/2.f, this->height/2.f);
     std::srand(m_frameAdded+1);
-    int numClouds = this->width >= 960.f ? 3+rand()%5 : 0;
+    int numClouds = this->width >= 960.f ? 3+rand()%5 : rand()%2;
     for(int i=0; i<numClouds; ++i){
         sf::Sprite s;
         sf::Texture cloud;

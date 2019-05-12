@@ -19,7 +19,7 @@ public:
 protected:
     void initialize() override;
 
-    sf::RectangleShape getSquareBox(int offsetx, int offsety);
+    sf::RectangleShape getSquareBox(float offsetx, float offsety);
     void addSquareBoxFixture(int offsetx, int offsety);;
     long long m_lastFrameWhenJumped = 0;
     b2BodyDef getBodyDef(float x, float y) override;

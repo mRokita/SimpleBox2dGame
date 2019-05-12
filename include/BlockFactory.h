@@ -12,8 +12,13 @@
 class BlockFactory : public Singleton<BlockFactory> {
 private:
     std::deque<std::shared_ptr<Block>> blocks;
+    void addBlock(Block* b);
 public:
     void addTBlock();
+    void addCBlock();
+    void addSBlock();
+    void addIBlock();
+    void addLBlock();
     std::shared_ptr<Block> getCurrentBlock() {
         return blocks.front();
     }

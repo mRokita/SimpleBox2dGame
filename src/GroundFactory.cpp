@@ -6,12 +6,15 @@
 
 void GroundFactory::processChunks(){
     if(this->chunks.empty()){
-        addGround(960.f, 120.f);
+        addGround(960.f, 160.f);
     } else {
         float x = chunks.back()->getX();
-        if(x <= chunks.back()->width/2.0+943.f+AngryBlocks::getInstance().getOffset()){
-            addGround(960.f, 120.f);
+        if((x + chunks.back()->width/2.0)<=AngryBlocks::getInstance().getOffset() + 960.f){
             addHole();
+            addGround(240.f, 160.f);
+            addGround(240.f, 180.f);
+            addGround(240.f, 170.f);
+            addGround(240.f, 160.f);
         }
     }
     while(this->chunks.size() > 15){

@@ -5,6 +5,9 @@
 #include "../include/Block.h"
 #include "../include/BlockFactory.h"
 #include "../include/Ground.h"
+#include "../include/CBlock.h"
+#include "../include/TBlock.h"
+#include <Box2D/Box2D.h>
 #include <set>
 
 
@@ -12,14 +15,13 @@ b2BodyType Block::getBodyType() const {
     return b2_dynamicBody;
 }
 
-
 void Block::addFixtures() {
 }
 
 b2BodyDef Block::getBodyDef(float x, float y) {
     b2BodyDef def = Sprite::getBodyDef(x, y);
     def.fixedRotation = false;
-    def.linearDamping = 0.2f;
+    def.linearDamping = 0.5f;
     def.angularDamping = 0.05f;
     return def;
 }
@@ -37,17 +39,30 @@ void Block::startContact(Sprite *sprite) {
             while(c){
                 auto s = (Sprite* )c->other->GetUserData();
                 Ground* a;
-                if((a = dynamic_cast<Ground*>(s)) != nullptr && a->height<120.f){
+                if((a = dynamic_cast<Ground*>(s)) != nullptr && a->height<160.f){
                     grounds.insert(a);
                 }
                 c = c->next;
 
             }
             for(auto g : grounds){
-                g->removeFromGame();
+//                g->removeFromGame();
+                g->m_body->SetLinearVelocity(b2Vec2(g->m_body->GetLinearVelocity().x, 5.f));
             }
+
             std::cout << "Contacts: " << grounds.size() << std::endl;
-            BlockFactory::getInstance().addTBlock();
+            int choice = frame%5;
+            if(choice == 0){
+                BlockFactory::getInstance().addCBlock();
+            } else if (choice == 1){
+                BlockFactory::getInstance().addTBlock();
+            } else if (choice == 2){
+                BlockFactory::getInstance().addLBlock();
+            } else if (choice == 3){
+                BlockFactory::getInstance().addIBlock();
+            } else {
+                BlockFactory::getInstance().addSBlock();
+            }
 
         }
     }
@@ -57,17 +72,6 @@ void Block::draw(const std::shared_ptr<sf::RenderWindow> &window) {
     Drawable::draw(window);
 }
 
-sf::RectangleShape Block::getSquareBox(int offsetx, int offsety) {
-    sf::RectangleShape rs(sf::Vector2f(38.f, 38.f));
-    rs.setOrigin(19.f+offsetx, 19.f+offsety);
-    sf::Uint8 animation_state = 15*sin(frame/10.f);
-    sf::Uint8 transparency = 200 + animation_state;
-    rs.setFillColor({244, 66, 66, transparency});
-    rs.setOutlineColor({244, 66, 66});
-    rs.setOutlineThickness(2.f);
-    applyBox2dPosition(rs);
-    return rs;
-}
 
 void Block::addSquareBoxFixture(int offsetx, int offsety) {
     b2PolygonShape shape;
@@ -81,9 +85,26 @@ void Block::addSquareBoxFixture(int offsetx, int offsety) {
 }
 
 void Block::onKeyPressed(sf::Event event) {
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W) && (frame - m_lastFrameWhenJumped) > 6){
+    if((frame - m_lastFrameWhenJumped) <= 6){
+        return;
+    }
+    m_lastFrameWhenJumped = frame;
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)
+    ||sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space)
+    || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up)){
         const b2Vec2 impulse(0.f, -3.f*m_body->GetMass());
-        m_lastFrameWhenJumped = frame;
         m_body->ApplyLinearImpulse(impulse, m_body->GetWorldCenter(), true);
     }
+}
+
+sf::RectangleShape Block::getSquareBox(float offsetx, float offsety) {
+    sf::RectangleShape rs(sf::Vector2f(38.f, 38.f));
+    rs.setOrigin(19.f-offsetx, 19.f-offsety);
+    auto animation_state = static_cast<sf::Uint8>(15*sin(frame/10.f));
+    sf::Uint8 transparency = 200 + animation_state;
+    rs.setFillColor({244, 66, 66, transparency});
+    rs.setOutlineColor({244, 66, 66});
+    rs.setOutlineThickness(2.f);
+    applyBox2dPosition(rs);
+    return rs;
 }
