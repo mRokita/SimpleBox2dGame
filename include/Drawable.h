@@ -13,12 +13,10 @@
 
 class Drawable {
 public:
-    Drawable() = default;
+    long long frame;
+    Drawable() {frame = 0;}
     virtual void draw(const std::shared_ptr<sf::RenderWindow> &window){
-        sf::RectangleShape rectangleShape(sf::Vector2f(40.f, 40.f));
-        rectangleShape.setPosition(480.f, 0.f);
-        rectangleShape.setFillColor(sf::Color::Black);
-        window->draw(rectangleShape);
+        frame += 1;
     }
     ~ Drawable() {
         std::cout << "Destroy drawable" << std::endl;

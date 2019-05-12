@@ -19,7 +19,7 @@ void Box::draw(const std::shared_ptr<sf::RenderWindow> &window) {
 
 void Box::addFixtures() {
     b2PolygonShape boxShape;
-    boxShape.SetAsBox(40.f/2.f/AngryGuns::SCALE, 40.f/2.f/AngryGuns::SCALE);
+    boxShape.SetAsBox(40.f/2.f/AngryBlocks::SCALE, 40.f/2.f/AngryBlocks::SCALE);
     b2FixtureDef boxFixtureDef;
     boxFixtureDef.shape = &boxShape;
     boxFixtureDef.density = 50;

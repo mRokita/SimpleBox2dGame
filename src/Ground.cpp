@@ -6,16 +6,27 @@
 
 void Ground::draw(const std::shared_ptr<sf::RenderWindow> &window) {
     sf::RectangleShape rs(sf::Vector2f(this->width, this->height));
-    rs.setFillColor(sf::Color::Green);
-    rs.setOutlineThickness(1.f);
-    rs.setOutlineColor(sf::Color::Green);
-    rs.setOrigin(this->width/2.f, this->height/2.f);
+    rs.setFillColor({244, 158, 66, 255});
     applyBox2dPosition(rs);
+    rs.setOrigin(this->width/2.f, this->height/2.f);
+    std::srand(m_frameAdded+1);
+    int numClouds = this->width >= 960.f ? 3+rand()%5 : 0;
+    for(int i=0; i<numClouds; ++i){
+        sf::Sprite s;
+        sf::Texture cloud;
+        s.setScale(2.f, 2.f);
+        cloud.loadFromFile("/home/mrokita/CLionProjects/AngryGuns/res/cloud.png");
+        s.setTexture(cloud);
+        s.setPosition(rs.getPosition().x-this->width/2+(rand()%this->width), rs.getPosition().y-450.f+rand()%300);
+        window->draw(s);
+    }
+
+
     window->draw(rs);
 }
 
 b2BodyType Ground::getBodyType() const {
-    return b2_staticBody;
+    return b2_kinematicBody;
 }
 
 b2BodyDef Ground::getBodyDef(float x, float y) {
@@ -25,10 +36,16 @@ b2BodyDef Ground::getBodyDef(float x, float y) {
 
 void Ground::addFixtures() {
     b2PolygonShape shape;
-    shape.SetAsBox(this->width/2.f/AngryGuns::SCALE, this->height/2.f/AngryGuns::SCALE);
+    shape.SetAsBox(this->width/2.f/AngryBlocks::SCALE, this->height/2.f/AngryBlocks::SCALE);
     b2FixtureDef def;
     def.shape = &shape;
     def.density = 1;
-    def.restitution = 0;
+    def.restitution = 0.4f;
     m_body->CreateFixture(&def);
 }
+
+void Ground::initialize() {
+    m_frameAdded = AngryBlocks::getInstance().getCurrentFrame();
+    m_body->SetLinearVelocity(b2Vec2(-3.f, 0.f));
+}
+

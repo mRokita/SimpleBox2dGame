@@ -11,30 +11,22 @@
 
 class ContactListener : public b2ContactListener {
     void BeginContact(b2Contact *contact) override {
-        //check if fixture A was a ball
-        void *bodyUserData = contact->GetFixtureA()->GetBody()->GetUserData();
-        if (bodyUserData)
-            static_cast<Sprite *>( bodyUserData )->startContact(contact->GetFixtureB()->GetBody());
-
-        //check if fixture B was a ball
-        bodyUserData = contact->GetFixtureB()->GetBody()->GetUserData();
-
-        if (bodyUserData)
-            static_cast<Sprite *>( bodyUserData )->startContact(contact->GetFixtureA()->GetBody());
-
+        auto SpriteA = static_cast<Sprite *>(contact->GetFixtureA()->GetBody()->GetUserData());
+        auto SpriteB = static_cast<Sprite *>(contact->GetFixtureB()->GetBody()->GetUserData());
+        if (SpriteA && SpriteB && SpriteA->isAlive() && SpriteB->isAlive()) {
+            SpriteA->startContact(SpriteB);
+            SpriteB->startContact(SpriteA);
+        }
     }
 
     void EndContact(b2Contact *contact) override {
 
-        //check if fixture A was a ball
-        void *bodyUserData = contact->GetFixtureA()->GetBody()->GetUserData();
-        if (bodyUserData)
-            static_cast<Sprite *>( bodyUserData )->endContact(contact->GetFixtureB()->GetBody());
-
-        //check if fixture B was a ball
-        bodyUserData = contact->GetFixtureB()->GetBody()->GetUserData();
-        if (bodyUserData)
-            static_cast<Sprite *>( bodyUserData )->endContact(contact->GetFixtureA()->GetBody());
+        auto SpriteA = static_cast<Sprite *>(contact->GetFixtureA()->GetBody()->GetUserData());
+        auto SpriteB = static_cast<Sprite *>(contact->GetFixtureB()->GetBody()->GetUserData());
+        if (SpriteA && SpriteB && SpriteA->isAlive() && SpriteB->isAlive()) {
+            SpriteA->endContact(SpriteB);
+            SpriteB->endContact(SpriteA);
+        }
 
     }
 };
