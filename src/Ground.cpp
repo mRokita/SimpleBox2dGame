@@ -9,7 +9,7 @@ void Ground::draw(const std::shared_ptr<sf::RenderWindow> &window) {
     rs.setFillColor({234, 217, 157, 255});
     applyBox2dPosition(rs);
     rs.setOrigin(this->width/2.f, this->height/2.f);
-    std::srand(m_frameAdded+1);
+    std::srand(m_frameAdded+1+this->height);
     int numClouds = this->width >= 960.f ? 3+rand()%5 : rand()%2;
     for(int i=0; i<numClouds; ++i){
         sf::Sprite s;
@@ -17,7 +17,7 @@ void Ground::draw(const std::shared_ptr<sf::RenderWindow> &window) {
         s.setScale(2.f, 2.f);
         cloud.loadFromFile("/home/mrokita/CLionProjects/AngryGuns/res/cloud.png");
         s.setTexture(cloud);
-        s.setPosition(rs.getPosition().x-this->width/2+(rand()%this->width), rs.getPosition().y-450.f+rand()%300);
+        s.setPosition(rs.getPosition().x-this->width/2+(rand()%this->width), rand()%350);
         window->draw(s);
     }
 
